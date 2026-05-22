@@ -510,7 +510,7 @@ void Spell::EffectSchoolDMG(SpellEffectIndex eff_idx)
                 // Custom: Instant Poison VII scaling with attack power
                 else if ((m_spellInfo->SpellFamilyFlags & uint64(0x0002000)) && m_spellInfo->Id == 26890 && m_caster->GetTypeId() == TYPEID_PLAYER)
                 {
-                    damage += int32(m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * 0.08f);
+                    damage += int32(m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * 0.04f);
                 }
 
                 break;
