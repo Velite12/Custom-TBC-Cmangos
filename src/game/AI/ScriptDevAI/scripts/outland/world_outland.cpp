@@ -294,6 +294,8 @@ struct world_map_outland : public ScriptedMap, public TimerManager
     // Ring of blood
     ObjectGuid m_playerGuid2;
 
+    std::map<uint64, TimePoint> m_vindicatorWhisperCooldowns;
+
     void Initialize() override
     {
         m_uiEmissaryOfHate_KilledAddCount = 0;
@@ -1567,6 +1569,7 @@ struct world_map_outland : public ScriptedMap, public TimerManager
             case NPC_LEGION_RING_SHIELD_ZAPPER_INVISMAN:
             case NPC_LEGION_RING_EVENT_INVISMAN_LG:
             case NPC_YSIEL_WINDSINGER:
+            case NPC_VINDICATOR_VUULEEN:
                 m_npcEntryGuidStore[creature->GetEntry()] = creature->GetObjectGuid();
                 break;
             case NPC_SKYGUARD_AETHER_TECH:
