@@ -532,6 +532,8 @@ UPDATE creature_template SET ScriptName='npc_stun_field' WHERE entry IN(23312);
 INSERT INTO scripted_event_id VALUES
 (14913,'event_doomguard_punisher'),
 (14942,'event_shivan_assassin');
+INSERT INTO scripted_areatrigger VALUES
+(4542,'at_vindicator_vuuleen');
 
 /* BLASTED LANDS */
 UPDATE creature_template SET ScriptName='boss_kazzak' WHERE entry=12397;
@@ -606,7 +608,8 @@ UPDATE creature_template SET ScriptName='boss_hungarfen' WHERE entry=17770;
 UPDATE creature_template SET ScriptName='boss_swamplord_muselek' WHERE entry=17826;
 UPDATE instance_template SET ScriptName='instance_underbog' WHERE map=546;
 INSERT INTO scripted_areatrigger VALUES
-(4302,'at_ghazan_surface');
+(4302,'at_ghazan_surface'),
+(4292,'at_earthbinder_rayge');
 UPDATE creature_template SET ScriptName='boss_black_stalker' WHERE entry=17882;
 
 /* THE STEAMVAULT */

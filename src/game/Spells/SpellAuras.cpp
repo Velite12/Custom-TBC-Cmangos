@@ -2097,10 +2097,6 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
             {
                 switch (GetId())
                 {
-                    case 1515:                              // Tame beast
-                        if (Unit* caster = GetCaster()) // Wotlk - sniff - adds 1000 threat
-                            target->AddThreat(caster, 1000.0f, false, GetSpellSchoolMask(GetSpellProto()), GetSpellProto());
-                        return;
                     case 6946:                              // Curse of the Bleakheart
                     case 41170:
                         m_isPeriodic = true;
@@ -8797,7 +8793,7 @@ int32 Aura::OnAuraValueCalculate(Unit* caster, int32 currentValue, Item* castIte
     return currentValue;
 }
 
-void Aura::OnDamageCalculate(Unit* victim, Unit* attacker, int32& advertisedBenefit, float& totalMod)
+void Aura::OnDamageCalculate(Unit* attacker, Unit* victim, int32& advertisedBenefit, float& totalMod)
 {
     if (AuraScript* script = GetAuraScript())
         return script->OnDamageCalculate(this, attacker, victim, advertisedBenefit, totalMod);
