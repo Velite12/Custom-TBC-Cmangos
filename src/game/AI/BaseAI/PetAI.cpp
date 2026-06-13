@@ -339,9 +339,7 @@ std::vector<std::tuple<SpellEntry const*, Unit*, bool>> PetAI::PickSpellWithTarg
             if (!ShouldCast(spellInfo, victim) || !CanAutoCast(spellInfo, m_unit))
                 continue;
 
-            // m_unit fails autocast if unit is currently unattackable (phase shift for example), so we leave nullptr
-            // which will later resolve to self targeting
-            nonblockingSpells.emplace_back(spellInfo, nullptr, false);
+            nonblockingSpells.emplace_back(spellInfo, m_unit, false);
             continue;
         }
         // Try to cast a spell if the spell is AoE
