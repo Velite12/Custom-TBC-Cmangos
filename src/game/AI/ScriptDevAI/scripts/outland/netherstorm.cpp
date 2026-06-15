@@ -1809,6 +1809,9 @@ struct npc_drijyaAI : public npc_escortAI
 
     void WaypointReached(uint32 uiPointId) override
     {
+        if (!HasEscortState(STATE_ESCORT_ESCORTING))
+            return;
+
         switch (uiPointId)
         {
             case 1:
@@ -1889,6 +1892,10 @@ struct npc_drijyaAI : public npc_escortAI
                     pPlayer->RewardPlayerAndGroupAtEventExplored(QUEST_ID_WARP_GATE, m_creature);
                 }
                 m_creature->ClearTemporaryFaction();
+                m_creature->GetMotionMaster()->Clear(false, true);
+                m_creature->GetMotionMaster()->MoveIdle();
+                End();
+                m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
                 break;
         }
     }
@@ -3961,6 +3968,8 @@ enum PhaseHunterData
     NPC_PHASE_HUNTER_ENTRY = 18879,
     NPC_DRAINED_PHASE_HUNTER_ENTRY = 19595
 };
+
+// 34219 - Recharging Battery
 struct RechargingBatterySpellScript : public SpellScript, public AuraScript
 {
     SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
@@ -3977,6 +3986,24 @@ struct RechargingBatterySpellScript : public SpellScript, public AuraScript
         if (!apply)
             if (aura->GetTarget()->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
                 static_cast<Creature*>(aura->GetTarget())->UpdateEntry(NPC_DRAINED_PHASE_HUNTER_ENTRY);
+    }
+};
+
+enum
+{
+    NPC_SUNDERED_RUMBLER = 18881,
+    NPC_WARP_ABERRATION = 18865,
+};
+
+// 34520 - Elemental Power Extractor
+struct ElementalPowerExtractor : public SpellScript
+{
+    SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+    {
+        Unit* target = spell->m_targets.getUnitTarget();
+        if (!target || (target->GetEntry() != NPC_SUNDERED_RUMBLER && target->GetEntry() != NPC_WARP_ABERRATION))
+            return SPELL_FAILED_BAD_TARGETS;
+        return SPELL_CAST_OK;
     }
 };
 
@@ -4102,4 +4129,5 @@ void AddSC_netherstorm()
     RegisterSpellScript<ScrapReaverSpell>("spell_scrap_reaver_spell");
     RegisterSpellScript<MentalInterferenceSpellScript>("spell_mental_interference");
     RegisterSpellScript<RechargingBatterySpellScript>("spell_recharging_battery");    
+    RegisterSpellScript<ElementalPowerExtractor>("spell_elemental_power_extractor");
 }

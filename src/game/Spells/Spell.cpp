@@ -3149,6 +3149,9 @@ void Spell::Prepare()
 
     if (!m_IsTriggeredSpell && !m_trueCaster->IsGameObject())
     {
+        if (m_clientCast && m_itemCastSpell)
+            m_caster->RemoveAurasOnCast(AURA_INTERRUPT_FLAG_ITEM_USE, m_spellInfo);
+
         if (!m_spellInfo->HasAttribute(SPELL_ATTR_EX2_NOT_AN_ACTION))
             m_caster->RemoveAurasOnCast(AURA_INTERRUPT_FLAG_ACTION, m_spellInfo);
 
@@ -3766,7 +3769,6 @@ void Spell::update(uint32 difftime)
                                 if (!m_caster->IsClientControlled())
                                 {
                                     m_caster->SetOrientation(orientation);
-                                    m_caster->SetFacingTo(orientation);
                                 }
                                 m_castOrientation = orientation; // need to update cast orientation due to the attribute
                             }
