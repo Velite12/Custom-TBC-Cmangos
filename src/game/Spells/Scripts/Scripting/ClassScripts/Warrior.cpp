@@ -78,6 +78,8 @@ struct Devastate : public SpellScript
         Unit* caster = spell->GetCaster();
         // Sunder Armor
         Aura* sunder = unitTarget->GetAura(SPELL_AURA_MOD_RESISTANCE, SPELLFAMILY_WARRIOR, uint64(0x0000000000004000), caster->GetObjectGuid());
+        // Custom: Expose Armor counts for 5 stacks of sunder for threat bonus
+        Aura* exposeArmor = unitTarget->GetAura(SPELL_AURA_MOD_RESISTANCE, SPELLFAMILY_ROGUE, uint64(0x0000000000080000), caster->GetObjectGuid());
 
         // 44452 unknown use
         // apply sunder armor first
@@ -98,6 +100,13 @@ struct Devastate : public SpellScript
 
             // 14 * stack
             unitTarget->AddThreat(caster, 14.0f * sunder->GetStackAmount(), false, GetSpellSchoolMask(spell->m_spellInfo), spell->m_spellInfo);
+        }
+        else if (exposeArmor)
+        {
+            spell->SetDamage(spell->GetDamage() * 5);
+
+            // 14 * stack
+            unitTarget->AddThreat(caster, 14.0f * 5, false, GetSpellSchoolMask(spell->m_spellInfo), spell->m_spellInfo);
         }
     }
 };
