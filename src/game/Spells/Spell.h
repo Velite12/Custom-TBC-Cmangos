@@ -112,6 +112,7 @@ class SpellCastTargets
             m_unitTarget = target.m_unitTarget;
             m_itemTarget = target.m_itemTarget;
             m_GOTarget   = target.m_GOTarget;
+            m_CorpseTarget = target.m_CorpseTarget;
 
             m_unitTargetGUID    = target.m_unitTargetGUID;
             m_GOTargetGUID      = target.m_GOTargetGUID;
@@ -315,7 +316,7 @@ class SpellModRAII
 class SpellCastArgs
 {
     public:
-        SpellCastArgs() : m_target(nullptr), m_scriptValue(0), m_scriptValueSet(false), m_destinationSet(false)
+        SpellCastArgs() : m_target(nullptr), m_scriptValue(0), m_scriptValueSet(false), m_destinationSet(false), m_itemSet(false), m_itemTarget(nullptr)
         {
             memset(m_basePoints, 0, sizeof(m_basePoints));
         }

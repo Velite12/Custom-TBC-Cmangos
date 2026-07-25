@@ -3589,7 +3589,7 @@ void Aura::HandleChannelDeathItem(bool apply, bool Real)
         if (msg != EQUIP_ERR_OK)
         {
             count -= noSpaceForCount;
-            ((Player*)caster)->SendEquipError(msg, nullptr, nullptr, itemType);
+            ((Player*)caster)->SendEquipError(msg, nullptr, nullptr, 0, itemType);
             if (count == 0)
                 return;
         }
@@ -5690,7 +5690,7 @@ void Aura::HandleAuraModIncreaseEnergy(bool apply, bool /*Real*/)
     Unit* target = GetTarget();
     Powers powerType = Powers(m_modifier.m_miscvalue);
 
-    UnitMods unitMod = UnitMods(UNIT_MOD_POWER_START + powerType);
+    UnitMods unitMod = UnitMods(static_cast<uint32>(UNIT_MOD_POWER_START) + static_cast<uint32>(powerType));
 
     target->HandleStatModifier(unitMod, TOTAL_VALUE, float(m_removeMode == AURA_REMOVE_BY_GAINED_STACK ? m_modifier.m_recentAmount : m_modifier.m_amount), apply);
 }
@@ -5700,7 +5700,7 @@ void Aura::HandleAuraModIncreaseEnergyPercent(bool apply, bool /*Real*/)
     Unit* target = GetTarget();
     Powers powerType = Powers(m_modifier.m_miscvalue);
 
-    UnitMods unitMod = UnitMods(UNIT_MOD_POWER_START + powerType);
+    UnitMods unitMod = UnitMods(static_cast<uint32>(UNIT_MOD_POWER_START) + static_cast<uint32>(powerType));
 
     target->HandleStatModifier(unitMod, TOTAL_PCT, float(m_modifier.m_amount), apply);
     target->ModifyPower(powerType, apply ? m_modifier.m_amount : -m_modifier.m_amount);
