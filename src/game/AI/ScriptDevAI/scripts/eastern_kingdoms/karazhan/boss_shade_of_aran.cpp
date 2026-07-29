@@ -323,7 +323,7 @@ struct boss_aranAI : public CombatAI
         switch (action)
         {
             case ARAN_ACTION_DRINK:
-                if (m_creature->GetPowerType() == POWER_MANA && (m_creature->GetPower(POWER_MANA) * 100 / m_creature->GetMaxPower(POWER_MANA)) < 20)
+                if (m_creature->GetPowerType() == POWER_MANA && (m_creature->GetPower(POWER_MANA) * 100 / m_creature->GetMaxPower(POWER_MANA)) < 10)
                 {
                     if (DoCastSpellIfCan(nullptr, SPELL_MASS_POLYMORPH) == CAST_OK)
                     {
