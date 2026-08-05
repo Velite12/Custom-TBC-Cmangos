@@ -7953,8 +7953,8 @@ uint32 Unit::MeleeDamageBonusDone(Unit* victim, uint32 pdamage, WeaponAttackType
         AuraList const& mModDamagePercentDone = GetAurasByType(SPELL_AURA_MOD_DAMAGE_PERCENT_DONE);
         for (auto i : mModDamagePercentDone)
         {
-            if (i->GetModifier()->m_miscvalue & schoolMask &&                         // schoolmask has to fit with the intrinsic spell school
-                i->GetModifier()->m_miscvalue & GetMeleeDamageSchoolMask(attType == BASE_ATTACK) &&         // AND schoolmask has to fit with weapon damage school (essential for non-physical spells)
+            if (i->GetModifier()->m_miscvalue & schoolMask &&                         // schoolmask has to fit with the intrinsic spellInfo school
+                i->GetModifier()->m_miscvalue & spellInfo->SchoolMask &&              // AND schoolmask has to fit with spell damage school (essential for non-physical spells)
                     ((i->GetSpellProto()->EquippedItemClass == -1) ||                     // general, weapon independent
                      (pWeapon && pWeapon->IsFitToSpellRequirements(i->GetSpellProto()))))  // OR used weapon fits aura requirements
             {
@@ -10053,6 +10053,14 @@ void CharmInfo::InitPetActionBar()
         SetActionBar(ACTION_BAR_INDEX_PET_SPELL_END + i, COMMAND_ATTACK - i, ACT_REACTION);
 }
 
+void CharmInfo::InitChessActionBar()
+{
+    // Chess event pieces do not have command or reaction visible
+    // first 4 SpellOrActions are spells/special attacks/abilities
+    for (uint32 i = 0; i <= ACTION_BAR_INDEX_PET_SPELL_END; ++i)
+        SetActionBar(ACTION_BAR_INDEX_PET_SPELL_START + i, 0, ACT_DISABLED);
+}
+
 void CharmInfo::InitEmptyActionBar()
 {
     for (uint32 x = ACTION_BAR_INDEX_START + 1; x < ACTION_BAR_INDEX_END; ++x)
@@ -10130,9 +10138,14 @@ void CharmInfo::InitPossessCreateSpells()
 
 void CharmInfo::InitCharmCreateSpells()
 {
-    InitPetActionBar();
-
-    SetActionBar(ACTION_BAR_INDEX_START, COMMAND_ATTACK, ACT_COMMAND);
+    // Special case: Karazhan chess pieces have non-standard action bar
+    if (m_unit->IsCreature() && m_unit->HasAura(30019))
+        InitChessActionBar();
+    else
+    {
+        InitPetActionBar();
+        SetActionBar(ACTION_BAR_INDEX_START, COMMAND_ATTACK, ACT_COMMAND);
+    }
 
     if (m_unit->IsPlayer())               // charmed players don't have spells
         return;
@@ -11789,6 +11802,9 @@ void Unit::SendMessageToAllWhoSeeMeMove(WorldPacket const& data, ObjectGuid move
             if (Player* player = GetMap()->GetPlayer(guid))
                 player->GetSession()->SendPacket(data);
         }
+
+        if (IsPlayer() && moverOwner != GetObjectGuid())
+            static_cast<Player const*>(this)->GetSession()->SendPacket(data);
     }
 }
 
