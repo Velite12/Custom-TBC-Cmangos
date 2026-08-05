@@ -2855,7 +2855,7 @@ struct TargetDistanceOrderNear
     // functor for operator ">"
     bool operator()(WorldObject const* _Left, WorldObject const* _Right) const
     {
-        return m_mainTarget->GetDistanceOrder(_Left, _Right, m_distcalc);
+        return m_mainTarget->GetDistanceOrder(_Left, _Right, true, m_distcalc);
     }
 };
 
@@ -2869,7 +2869,7 @@ struct TargetDistanceOrderFarAway
     // functor for operator "<"
     bool operator()(WorldObject const* _Left, WorldObject const* _Right) const
     {
-        return !m_mainTarget->GetDistanceOrder(_Left, _Right, m_distcalc);
+        return !m_mainTarget->GetDistanceOrder(_Left, _Right, true, m_distcalc);
     }
 };
 
@@ -2883,7 +2883,7 @@ struct LowestHPNearestOrder
     bool operator()(Unit const* _Left, Unit const* _Right) const
     {
         if (_Left->GetHealthPercent() == _Right->GetHealthPercent())
-            return m_mainTarget->GetDistanceOrder(_Left, _Right, m_distcalc);
+            return m_mainTarget->GetDistanceOrder(_Left, _Right, true, m_distcalc);
         return _Left->GetHealthPercent() < _Right->GetHealthPercent();
     }
 };
