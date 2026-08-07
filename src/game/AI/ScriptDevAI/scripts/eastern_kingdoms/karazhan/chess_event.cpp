@@ -133,11 +133,11 @@ enum
     SPELL_RAIN_OF_FIRE              = 37465,
     SPELL_FIREBALL                  = 37463,                    // orc queen
     SPELL_POISON_CLOUD              = 37469,
-    // SPELL_POISON_CLOUD_ACTION    = 37775,                    // triggers 37469 - acts as a target selector spell for orc queen (npc can't use this)
+    SPELL_POISON_CLOUD_ACTION       = 37775,                    // triggers 37469 - acts as a target selector spell for orc queen
     SPELL_HEALING                   = 37455,                    // human bishop
     SPELL_HOLY_LANCE                = 37459,
     SPELL_SHADOW_MEND               = 37456,                    // orc bishop
-    // SPELL_SHADOW_MEND_ACTION     = 37824,                    // triggers 37456 - acts as a target selector spell for orc bishop (npc can't use this)
+    SPELL_SHADOW_MEND_ACTION        = 37824,                    // triggers 37456 - acts as a target selector spell for orc bishop
     SPELL_SHADOW_SPEAR              = 37461,
     SPELL_GEYSER                    = 37427,                    // human rook
     SPELL_WATER_SHIELD              = 37432,
@@ -409,19 +409,7 @@ struct npc_chess_piece_genericAI : public Scripted_NoMovementAI
     {
         // do a soft reset when the piece is controlled
         if (pCaster->GetTypeId() == TYPEID_PLAYER && pSpell->Id == SPELL_CONTROL_PIECE)
-        {
             Reset();
-            // Restore original faction so medivh's cheat spell can damage us, since normally charm unit faction = player unit faction
-            m_creature->RestoreOriginalFaction();
-            CharmInfo* charmInfo = m_creature->GetCharmInfo();
-            MotionMaster* mm = m_unit->GetMotionMaster();
-            // Override default charm follow behavior to not run off the board
-            if (charmInfo)
-                charmInfo->SetIsRetreating(false);
-            if (mm)
-                mm->Clear();
-        }
-            
     }
 
     // Function which returns a random target by type and range
@@ -722,6 +710,126 @@ struct KarazhanChessNpcAiTakeActionMelee : public SpellScript
     }
 };
 
+// 32227 - Karazhan - Chess NPC Action: Melee Attack: Footman
+struct ChessMeleeAttackFootman : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 32228 - Karazhan - Chess NPC Action: Melee Attack: Grunt
+struct ChessMeleeAttackGrunt : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37143 - Karazhan - Chess NPC Action: Melee Attack: Charger
+struct ChessMeleeAttackCharger : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37339 - Karazhan - Chess NPC Action: Melee Attack: Orc Wolf
+struct ChessMeleeAttackWolf : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37147 - Karazhan - Chess NPC Action: Melee Attack: Human Cleric
+struct ChessMeleeAttackCleric : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37337 - Karazhan - Chess NPC Action: Melee Attack: Orc Necrolyte
+struct ChessMeleeAttackNecrolyte : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37142 - Karazhan - Chess NPC Action: Melee Attack: Conjured Water Elemental
+struct ChessMeleeAttackElemental : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37220 - Karazhan - Chess NPC Action: Melee Attack: Summoned Daemon
+struct ChessMeleeAttackDaemon : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37149 - Karazhan - Chess NPC Action: Melee Attack: Human Conjurer
+struct ChessMeleeAttackConjurer : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37345 - Karazhan - Chess NPC Action: Melee Attack: Orc Warlock
+struct ChessMeleeAttackWarlock : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37150 - Karazhan - Chess NPC Action: Melee Attack: King Llane
+struct ChessMeleeAttackLlane : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
+// 37348 - Karazhan - Chess NPC Action: Melee Attack: Warchief Blackhand
+struct ChessMeleeAttackBlackhand : public SpellScript
+{
+    bool OnCheckTarget(const Spell* spell, Unit* target, SpellEffectIndex /*eff*/) const override
+    {
+        Unit* caster = spell->GetCaster();
+        return target->GetDistance(caster) <= 8.0f && caster->GetAngle(target) <= 15.0f;
+    }
+};
+
 // 30270 - Chess: Face Square
 struct ChessFaceSquare : public SpellScript
 {
@@ -736,6 +844,30 @@ struct ChessFaceSquare : public SpellScript
             target->AI()->SendAIEvent(AI_EVENT_CUSTOM_C, caster, target);
         }
     }
+};
+
+// 37462 - Elemental Blast
+struct ChessElementalBlast : public SpellScript
+{
+    SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+    {
+        Unit* target = spell->m_targets.getUnitTarget();
+        if (!target || target->GetFaction() != FACTION_ID_CHESS_HORDE)
+            return SPELL_FAILED_BAD_TARGETS;
+        return SPELL_CAST_OK;
+    }    
+};
+
+// 37463 - Fireball
+struct ChessFireball : public SpellScript
+{
+    SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+    {
+        Unit* target = spell->m_targets.getUnitTarget();
+        if (!target || target->GetFaction() != FACTION_ID_CHESS_ALLIANCE)
+            return SPELL_FAILED_BAD_TARGETS;
+        return SPELL_CAST_OK;
+    }    
 };
 
 /*######
@@ -1083,7 +1215,7 @@ struct npc_orc_warlockAI : public npc_chess_piece_genericAI
     {
         if (Unit* pTarget = GetTargetByType(TARGET_TYPE_RANDOM, 25.0f))
         {
-            DoCastSpellIfCan(pTarget, SPELL_POISON_CLOUD);
+            DoCastSpellIfCan(pTarget, SPELL_POISON_CLOUD_ACTION);
 
             // reset timer based on spell values
             const SpellEntry* pSpell = GetSpellStore()->LookupEntry<SpellEntry>(SPELL_POISON_CLOUD);
@@ -1705,7 +1837,7 @@ struct npc_orc_necrolyteAI : public npc_chess_piece_genericAI
     {
         if (Unit* pTarget = GetTargetByType(TARGET_TYPE_FRIENDLY, 25.0f))
         {
-            DoCastSpellIfCan(pTarget, SPELL_SHADOW_MEND);
+            DoCastSpellIfCan(pTarget, SPELL_SHADOW_MEND_ACTION);
 
             // reset timer based on spell values
             const SpellEntry* pSpell = GetSpellStore()->LookupEntry<SpellEntry>(SPELL_SHADOW_MEND);
@@ -1847,4 +1979,19 @@ void AddSC_chess_event()
     RegisterSpellScript<ChessMoveToSquare>("spell_chess_move_to_square");
     RegisterSpellScript<KarazhanChessNpcAiTakeActionMelee>("spell_karazhan_chess_take_action_melee");
     RegisterSpellScript<ChessFaceSquare>("spell_chess_face_square");
+    RegisterSpellScript<ChessMeleeAttackFootman>("spell_chess_melee_footman"); 
+    RegisterSpellScript<ChessMeleeAttackGrunt>("spell_chess_melee_grunt"); 
+    RegisterSpellScript<ChessMeleeAttackCharger>("spell_chess_melee_charger");
+    RegisterSpellScript<ChessMeleeAttackWolf>("spell_chess_melee_wolf");
+    RegisterSpellScript<ChessMeleeAttackCleric>("spell_chess_melee_cleric");
+    RegisterSpellScript<ChessMeleeAttackNecrolyte>("spell_chess_melee_necrolyte");
+    RegisterSpellScript<ChessMeleeAttackElemental>("spell_chess_melee_elemental");
+    RegisterSpellScript<ChessMeleeAttackDaemon>("spell_chess_melee_daemon");
+    RegisterSpellScript<ChessMeleeAttackConjurer>("spell_chess_melee_conjurer");
+    RegisterSpellScript<ChessMeleeAttackWarlock>("spell_chess_melee_warlock");
+    RegisterSpellScript<ChessMeleeAttackLlane>("spell_chess_melee_llane");
+    RegisterSpellScript<ChessMeleeAttackBlackhand>("spell_chess_melee_blackhand");
+    RegisterSpellScript<ChessElementalBlast>("spell_chess_elemental_blast");
+    RegisterSpellScript<ChessFireball>("spell_chess_fireball");
+
 }

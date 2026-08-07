@@ -1815,6 +1815,22 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
 
                     return;
                 }
+                case 37775:                                 // Karazhan - Chess NPC Action - Poison Cloud
+                {
+                    if (!unitTarget)
+                        return;
+
+                    m_caster->CastSpell(unitTarget, 37469, TRIGGERED_OLD_TRIGGERED);
+                    return;
+                }
+                case 37824:                                 // Karazhan - Chess NPC Action - Shadow Mend
+                {
+                    if (!unitTarget)
+                        return;
+
+                    m_caster->CastSpell(unitTarget, 37456, TRIGGERED_OLD_TRIGGERED);
+                    return;
+                }
                 case 33923:                                 // Sonic Boom
                 case 38796:                                 // Sonic Boom (heroic)
                 {
@@ -6088,8 +6104,7 @@ void Spell::EffectScriptEffect(SpellEffectIndex eff_idx)
                 case 37345:                                 // Karazhan - Chess NPC Action: Melee Attack: Orc Warlock
                 case 37348:                                 // Karazhan - Chess NPC Action: Melee Attack: Warchief Blackhand
                 {
-                    // check if we are within range and facing the target to attack; prevents ai pieces from attacking past 2 tiles
-                    if (!unitTarget || unitTarget->GetDistance(m_caster) > 8.0f || m_caster->GetAngle(unitTarget) > 15.0f)
+                    if (!unitTarget)
                         return;
 
                     m_caster->CastSpell(unitTarget, 32247, TRIGGERED_OLD_TRIGGERED);
@@ -6174,22 +6189,6 @@ void Spell::EffectScriptEffect(SpellEffectIndex eff_idx)
 
                     unitTarget->RemoveAurasDueToSpell(36904);
                     unitTarget->CastSpell(nullptr, 37013, TRIGGERED_NONE);
-                    return;
-                }
-                case 37775:                                 // Karazhan - Chess NPC Action - Poison Cloud
-                {
-                    if (!unitTarget)
-                        return;
-
-                    m_caster->CastSpell(unitTarget, 37469, TRIGGERED_OLD_TRIGGERED);
-                    return;
-                }
-                case 37824:                                 // Karazhan - Chess NPC Action - Shadow Mend
-                {
-                    if (!unitTarget)
-                        return;
-
-                    m_caster->CastSpell(unitTarget, 37456, TRIGGERED_OLD_TRIGGERED);
                     return;
                 }
                 case 38055:                                 // Destroy Deathforged Infernal
@@ -6280,8 +6279,7 @@ void Spell::EffectScriptEffect(SpellEffectIndex eff_idx)
                 }
                 case 39341:                                 // Karazhan - Chess, Medivh CHEAT: Fury of Medivh, Target Horde
                 {
-                    // Prevent targeting Medivh's pieces
-                    if (!unitTarget || unitTarget->GetFaction() != 1689)
+                    if (!unitTarget)
                         return;
 
                     m_caster->CastSpell(unitTarget, m_spellInfo->CalculateSimpleValue(eff_idx), TRIGGERED_OLD_TRIGGERED);
@@ -6289,8 +6287,7 @@ void Spell::EffectScriptEffect(SpellEffectIndex eff_idx)
                 }
                 case 39344:                                 // Karazhan - Chess, Medivh CHEAT: Fury of Medivh, Target Alliance
                 {
-                    // Prevent targeting Medivh's pieces
-                    if (!unitTarget || unitTarget->GetFaction() != 1690)
+                    if (!unitTarget)
                         return;
 
                     m_caster->CastSpell(unitTarget, m_spellInfo->CalculateSimpleValue(eff_idx), TRIGGERED_OLD_TRIGGERED);
