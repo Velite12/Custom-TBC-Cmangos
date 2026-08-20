@@ -33,9 +33,9 @@ npc_cenarion_sparrowhawk
 npc_skyguard_prisoner
 EndContentData */
 
-#include "AI/ScriptDevAI/include/sc_common.h"
 #include "AI/ScriptDevAI/base/escort_ai.h"
 #include "AI/ScriptDevAI/base/pet_ai.h"
+#include "AI/ScriptDevAI/include/sc_common.h"
 #include "world_outland.h"
 
 /*######
@@ -44,12 +44,12 @@ EndContentData */
 
 enum
 {
-    SAY_SUBMIT                  = -1000194,
+    SAY_SUBMIT = -1000194,
 
-    FACTION_FRIENDLY            = 35,
+    FACTION_FRIENDLY = 35,
 
-    SPELL_PULVERIZE             = 2676,
-    SPELL_QUID9889              = 32174,
+    SPELL_PULVERIZE = 2676,
+    SPELL_QUID9889 = 32174,
 };
 
 struct mob_unkor_the_ruthlessAI : public ScriptedAI
@@ -63,10 +63,10 @@ struct mob_unkor_the_ruthlessAI : public ScriptedAI
 
     void Reset() override
     {
-        m_bCanDoQuest       = false;
+        m_bCanDoQuest = false;
         m_uiUnfriendlyTimer = 0;
-        m_uiFriendlyTimer   = 0;
-        m_uiPulverizeTimer  = 3000;
+        m_uiFriendlyTimer = 0;
+        m_uiPulverizeTimer = 3000;
         m_creature->SetStandState(UNIT_STAND_STATE_STAND);
     }
 
@@ -137,15 +137,14 @@ UnitAI* GetAI_mob_unkor_the_ruthless(Creature* pCreature)
 
 enum
 {
-    NPC_FREED_WARRIOR       = 22459,
-    QUEST_TAKEN_IN_NIGHT    = 10873
-                              // SPELL_FREE_WEBBED       = 38950
+    NPC_FREED_WARRIOR = 22459,
+    QUEST_TAKEN_IN_NIGHT = 10873
+    // SPELL_FREE_WEBBED       = 38950
 };
 
 const uint32 netherwebVictims[6] =
-{
-    18470, 16805, 21242, 18452, 22482, 21285
-};
+    {
+        18470, 16805, 21242, 18452, 22482, 21285};
 
 struct mob_netherweb_victimAI : public ScriptedAI
 {
@@ -155,8 +154,8 @@ struct mob_netherweb_victimAI : public ScriptedAI
         Reset();
     }
 
-    void Reset() override { }
-    void MoveInLineOfSight(Unit* /*pWho*/) override { }
+    void Reset() override {}
+    void MoveInLineOfSight(Unit* /*pWho*/) override {}
 
     void JustDied(Unit* pKiller) override
     {
@@ -187,20 +186,20 @@ UnitAI* GetAI_mob_netherweb_victim(Creature* pCreature)
 
 enum
 {
-    SAY_AKU_START           = -1000477,
-    SAY_AKU_AMBUSH_A        = -1000478,
-    SAY_AKU_AMBUSH_B        = -1000479,
-    SAY_AKU_AMBUSH_B_REPLY  = -1000480,
-    SAY_AKU_COMPLETE        = -1000481,
+    SAY_AKU_START = -1000477,
+    SAY_AKU_AMBUSH_A = -1000478,
+    SAY_AKU_AMBUSH_B = -1000479,
+    SAY_AKU_AMBUSH_B_REPLY = -1000480,
+    SAY_AKU_COMPLETE = -1000481,
 
-    SPELL_CHAIN_LIGHTNING   = 39945,
+    SPELL_CHAIN_LIGHTNING = 39945,
 
-    QUEST_ESCAPING_TOMB     = 10887,
-    NPC_CABAL_SKIRMISHER    = 21661
+    QUEST_ESCAPING_TOMB = 10887,
+    NPC_CABAL_SKIRMISHER = 21661
 };
 
-static float m_afAmbushB1[] = { -2895.525879f, 5336.431641f, -11.800f};
-static float m_afAmbushB2[] = { -2890.604980f, 5331.938965f, -11.282f};
+static float m_afAmbushB1[] = {-2895.525879f, 5336.431641f, -11.800f};
+static float m_afAmbushB2[] = {-2890.604980f, 5331.938965f, -11.282f};
 
 struct npc_akunoAI : public npc_escortAI
 {
@@ -291,9 +290,9 @@ UnitAI* GetAI_npc_akuno(Creature* pCreature)
 
 enum
 {
-    EMOTE_FEED                  = -1000628,
-    NPC_BLACK_WARP_CHASER       = 23219,
-    SPELL_FEED_CREDIT           = 41427,                    // credit for quest 11093
+    EMOTE_FEED = -1000628,
+    NPC_BLACK_WARP_CHASER = 23219,
+    SPELL_FEED_CREDIT = 41427, // credit for quest 11093
 };
 
 struct npc_hungry_nether_rayAI : public ScriptedPetAI
@@ -379,34 +378,34 @@ UnitAI* GetAI_npc_hungry_nether_ray(Creature* pCreature)
 
 enum
 {
-    SAY_LE_START                    = -1000511,
-    SAY_LE_KEEP_SAFE                = -1000512,
-    SAY_LE_NORTH                    = -1000513,
-    SAY_LE_ARRIVE                   = -1000514,
-    SAY_LE_BURIED                   = -1000515,
-    SAY_LE_ALMOST                   = -1000516,
-    SAY_LE_DRUM                     = -1000517,
-    SAY_LE_DRUM_REPLY               = -1000518,
-    SAY_LE_DISCOVERY                = -1000519,
-    SAY_LE_DISCOVERY_REPLY          = -1000520,
-    SAY_LE_NO_LEAVE                 = -1000521,
-    SAY_LE_NO_LEAVE_REPLY1          = -1000522,
-    SAY_LE_NO_LEAVE_REPLY2          = -1000523,
-    SAY_LE_NO_LEAVE_REPLY3          = -1000524,
-    SAY_LE_NO_LEAVE_REPLY4          = -1000525,
-    SAY_LE_SHUT                     = -1000526,
-    SAY_LE_REPLY_HEAR               = -1000527,
-    SAY_LE_IN_YOUR_FACE             = -1000528,
-    SAY_LE_HELP_HIM                 = -1000529,
-    EMOTE_LE_PICK_UP                = -1000530,
-    SAY_LE_THANKS                   = -1000531,
+    SAY_LE_START = -1000511,
+    SAY_LE_KEEP_SAFE = -1000512,
+    SAY_LE_NORTH = -1000513,
+    SAY_LE_ARRIVE = -1000514,
+    SAY_LE_BURIED = -1000515,
+    SAY_LE_ALMOST = -1000516,
+    SAY_LE_DRUM = -1000517,
+    SAY_LE_DRUM_REPLY = -1000518,
+    SAY_LE_DISCOVERY = -1000519,
+    SAY_LE_DISCOVERY_REPLY = -1000520,
+    SAY_LE_NO_LEAVE = -1000521,
+    SAY_LE_NO_LEAVE_REPLY1 = -1000522,
+    SAY_LE_NO_LEAVE_REPLY2 = -1000523,
+    SAY_LE_NO_LEAVE_REPLY3 = -1000524,
+    SAY_LE_NO_LEAVE_REPLY4 = -1000525,
+    SAY_LE_SHUT = -1000526,
+    SAY_LE_REPLY_HEAR = -1000527,
+    SAY_LE_IN_YOUR_FACE = -1000528,
+    SAY_LE_HELP_HIM = -1000529,
+    EMOTE_LE_PICK_UP = -1000530,
+    SAY_LE_THANKS = -1000531,
 
-    QUEST_DIGGING_BONES             = 10922,
+    QUEST_DIGGING_BONES = 10922,
 
-    NPC_RESEARCHER                  = 22464,
-    NPC_BONE_SIFTER                 = 22466,
+    NPC_RESEARCHER = 22464,
+    NPC_BONE_SIFTER = 22466,
 
-    MAX_RESEARCHER                  = 4
+    MAX_RESEARCHER = 4
 };
 
 // Some details still missing from here, and will also have issues if followers evade for any reason.
@@ -631,22 +630,22 @@ bool QuestAccept_npc_letoll(Player* pPlayer, Creature* pCreature, const Quest* p
 
 enum
 {
-    QUEST_ESCAPE_FROM_FIREWING_POINT_A  = 10051,
-    QUEST_ESCAPE_FROM_FIREWING_POINT_H  = 10052,
+    QUEST_ESCAPE_FROM_FIREWING_POINT_A = 10051,
+    QUEST_ESCAPE_FROM_FIREWING_POINT_H = 10052,
 
-    SAY_ISLA_PERIODIC_1                 = -1000629,
-    SAY_ISLA_PERIODIC_2                 = -1000630,
-    SAY_ISLA_PERIODIC_3                 = -1000631,
-    SAY_ISLA_START                      = -1000632,
-    SAY_ISLA_WAITING                    = -1000633,
-    SAY_ISLA_LEAVE_BUILDING             = -1000634,
+    SAY_ISLA_PERIODIC_1 = -1000629,
+    SAY_ISLA_PERIODIC_2 = -1000630,
+    SAY_ISLA_PERIODIC_3 = -1000631,
+    SAY_ISLA_START = -1000632,
+    SAY_ISLA_WAITING = -1000633,
+    SAY_ISLA_LEAVE_BUILDING = -1000634,
 
-    GO_CAGE                             = 182794,
+    GO_CAGE = 182794,
 
-    SPELL_ENTANGLING_ROOTS              = 33844,            // these spell IDs seem to deal not enough dmg, but are linked
-    SPELL_MOONFIRE                      = 15798,
-    SPELL_WRATH                         = 9739,
-    SPELL_TRAVELFORM                    = 32447             // guesswork
+    SPELL_ENTANGLING_ROOTS = 33844, // these spell IDs seem to deal not enough dmg, but are linked
+    SPELL_MOONFIRE = 15798,
+    SPELL_WRATH = 9739,
+    SPELL_TRAVELFORM = 32447 // guesswork
 };
 
 struct npc_isla_starmaneAI : public npc_escortAI
@@ -684,8 +683,8 @@ struct npc_isla_starmaneAI : public npc_escortAI
     {
         switch (uiPointId)
         {
-            case 7:  DoScriptText(SAY_ISLA_LEAVE_BUILDING, m_creature); break;
-            case 68: DoCastSpellIfCan(m_creature, SPELL_TRAVELFORM);    break;
+            case 7: DoScriptText(SAY_ISLA_LEAVE_BUILDING, m_creature); break;
+            case 68: DoCastSpellIfCan(m_creature, SPELL_TRAVELFORM); break;
         }
     }
 
@@ -781,22 +780,22 @@ UnitAI* GetAI_npc_isla_starmane(Creature* pCreature)
 
 enum
 {
-    SAY_SKYWING_START            = -1000797,
-    SAY_SKYWING_TREE_DOWN        = -1000798,
-    SAY_SKYWING_TREE_UP          = -1000799,
-    SAY_SKYWING_JUMP             = -1000800,
-    SAY_SKYWING_SUMMON           = -1000801,
-    SAY_SKYWING_END              = -1000802,
+    SAY_SKYWING_START = -1000797,
+    SAY_SKYWING_TREE_DOWN = -1000798,
+    SAY_SKYWING_TREE_UP = -1000799,
+    SAY_SKYWING_JUMP = -1000800,
+    SAY_SKYWING_SUMMON = -1000801,
+    SAY_SKYWING_END = -1000802,
 
-    SPELL_FEATHERY_CYCLONE_BURST = 39166,           // triggered many times by server side spell - 39167 (channeled for 5 sec)
-    SPELL_RILAK_THE_REDEEMED     = 39179,
+    SPELL_FEATHERY_CYCLONE_BURST = 39166, // triggered many times by server side spell - 39167 (channeled for 5 sec)
+    SPELL_RILAK_THE_REDEEMED = 39179,
 
-    NPC_LUANGA_THE_IMPRISONER    = 18533,
+    NPC_LUANGA_THE_IMPRISONER = 18533,
 
-    QUEST_SKYWING                = 10898
+    QUEST_SKYWING = 10898
 };
 
-static const float aLuangaSpawnCoords[3] = { -3507.203f, 4084.619f, 92.947f};
+static const float aLuangaSpawnCoords[3] = {-3507.203f, 4084.619f, 92.947f};
 
 struct npc_skywingAI : public npc_escortAI
 {
@@ -913,12 +912,12 @@ UnitAI* GetAI_npc_skywing(Creature* pCreature)
 
 enum
 {
-    EMOTE_FOLLOW                = -1000963,
-    EMOTE_SURVEY                = -1000964,
-    EMOTE_LOCATE                = -1000965,
+    EMOTE_FOLLOW = -1000963,
+    EMOTE_SURVEY = -1000964,
+    EMOTE_LOCATE = -1000965,
 
-    NPC_SKETTIS_RAVEN_STONE     = 22986,
-    GO_RAVEN_STONE              = 185541,
+    NPC_SKETTIS_RAVEN_STONE = 22986,
+    GO_RAVEN_STONE = 185541,
 };
 
 struct npc_cenarion_sparrowhawkAI : public ScriptedAI
@@ -933,7 +932,7 @@ struct npc_cenarion_sparrowhawkAI : public ScriptedAI
     void Reset() override
     {
         m_uiSurveyTimer = 3000;
-        m_bFirstTimer   = true;
+        m_bFirstTimer = true;
         DoScriptText(EMOTE_FOLLOW, m_creature);
     }
 
@@ -1004,30 +1003,30 @@ UnitAI* GetAI_npc_cenarion_sparrowhawk(Creature* pCreature)
 
 enum
 {
-    SAY_ESCORT_START            = -1001006,
-    SAY_AMBUSH_END              = -1001007,
-    SAY_ESCORT_COMPLETE         = -1001008,
-    SAY_AMBUSH_1                = -1001009,
-    SAY_AMBUSH_2                = -1001010,
-    SAY_AMBUSH_3                = -1001011,
-    SAY_AMBUSH_4                = -1001012,
+    SAY_ESCORT_START = -1001006,
+    SAY_AMBUSH_END = -1001007,
+    SAY_ESCORT_COMPLETE = -1001008,
+    SAY_AMBUSH_1 = -1001009,
+    SAY_AMBUSH_2 = -1001010,
+    SAY_AMBUSH_3 = -1001011,
+    SAY_AMBUSH_4 = -1001012,
 
-    NPC_WING_GUARD              = 21644,
-    GO_PRISONER_CAGE            = 185952,
+    NPC_WING_GUARD = 21644,
+    GO_PRISONER_CAGE = 185952,
 
-    QUEST_ID_ESCAPE_SKETTIS     = 11085,
+    QUEST_ID_ESCAPE_SKETTIS = 11085,
 
-    SPELL_PORT_LOCATION_1		= 41136,
-    SPELL_PORT_LOCATION_2		= 41138,
-    SPELL_PORT_LOCATION_3		= 41141,
-    SPELL_CAGE_SUMMON			= 41147
+    SPELL_PORT_LOCATION_1 = 41136,
+    SPELL_PORT_LOCATION_2 = 41138,
+    SPELL_PORT_LOCATION_3 = 41141,
+    SPELL_CAGE_SUMMON = 41147
 };
 
 struct npc_skyguard_prisonerAI : public npc_escortAI
 {
     npc_skyguard_prisonerAI(Creature* pCreature) : npc_escortAI(pCreature) { Reset(); }
 
-    void Reset() override { }
+    void Reset() override {}
 
     void JustRespawned() override
     {
@@ -1054,11 +1053,11 @@ struct npc_skyguard_prisonerAI : public npc_escortAI
 
             SetEscortPaused(true);
 
-            if (m_creature->GetPositionZ() < 310.0f)        // -3720.35, 3789.91, 302.888
+            if (m_creature->GetPositionZ() < 310.0f) // -3720.35, 3789.91, 302.888
                 SetCurrentWaypoint(20);
-            else if (m_creature->GetPositionZ() < 320.0f)   // -3669.57, 3386.74, 312.955
+            else if (m_creature->GetPositionZ() < 320.0f) // -3669.57, 3386.74, 312.955
                 SetCurrentWaypoint(34);
-            else if (m_creature->GetPositionZ() < 350.0f)   // -4106.64, 3029.76, 344.877
+            else if (m_creature->GetPositionZ() < 350.0f) // -4106.64, 3029.76, 344.877
                 SetCurrentWaypoint(1);
 
             SetEscortPaused(false);
@@ -1152,14 +1151,14 @@ bool QuestAccept_npc_skyguard_prisoner(Player* pPlayer, Creature* pCreature, con
 
 enum
 {
-    SPELL_TERRIFYING_SCREECH    = 38021,
-    SPELL_FEATHER_BURST         = 39068,
+    SPELL_TERRIFYING_SCREECH = 38021,
+    SPELL_FEATHER_BURST = 39068,
 
-    SAY_DEFENDER_GRASHNA        = -1001228,
+    SAY_DEFENDER_GRASHNA = -1001228,
 
-    NPC_DEFENDER_GRASHNA        = 22373,
+    NPC_DEFENDER_GRASHNA = 22373,
 
-    QUEST_SKETTIS_OFFENSIVE     = 10879,
+    QUEST_SKETTIS_OFFENSIVE = 10879,
 };
 
 void AttackPlayerWithQuest(Creature* creature)
@@ -1277,7 +1276,11 @@ enum
 
 struct npc_draenei_tomb_guardian : public ScriptedAI
 {
-    npc_draenei_tomb_guardian(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); summons.clear(); }
+    npc_draenei_tomb_guardian(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+        summons.clear();
+    }
 
     Creature* harbinger;
     std::vector<ObjectGuid> summons;
@@ -1312,7 +1315,7 @@ struct npc_draenei_tomb_guardian : public ScriptedAI
         m_creature->GetMap()->ScriptsStart(SCRIPT_TYPE_RELAY, DBSCRIPT_EVENT_RESET, m_creature, m_creature);
 
         // Despawn Vengeful Harbinger and Vengeful Draenei
-        for (ObjectGuid &guid : summons)
+        for (ObjectGuid& guid : summons)
             if (Creature* creature = m_creature->GetMap()->GetCreature(guid))
                 creature->ForcedDespawn();
 
@@ -1327,8 +1330,7 @@ struct npc_draenei_tomb_guardian : public ScriptedAI
 
         switch (eventType)
         {
-            case AI_EVENT_CUSTOM_A:
-            {
+            case AI_EVENT_CUSTOM_A: {
                 harbinger = static_cast<Creature*>(sender);
 
                 float x, y, z;
@@ -1336,8 +1338,7 @@ struct npc_draenei_tomb_guardian : public ScriptedAI
                 m_creature->GetMotionMaster()->MovePoint(POINT_HARBINGER_POSITION, x, y, z);
                 break;
             }
-            case AI_EVENT_CUSTOM_B:
-            {
+            case AI_EVENT_CUSTOM_B: {
                 ResetEvent();
             }
             default:
@@ -1362,7 +1363,6 @@ enum
     NPC_ORB_WAYPOINT_1 = 21443,
 
     DBSCRIPT_VENGEFUL_HARBINGER_FAKE_DEATH = 10063,
-    DBSCRIPT_RESPAWN_ASCENDANT_FLOORPIECE = 10067,
 
     EVENT_RESET_TIMER = 120000,
 
@@ -1372,7 +1372,6 @@ enum
     QUEST_VENGEFUL_HARBINGER = 10842,
 
     POINT_ID_END = 4,
-    POINT_ID_ALMOST_END = 3,
     PATH_ID_END = 2,
 };
 
@@ -1386,8 +1385,7 @@ struct npc_vengeful_harbinger : public ScriptedAI
     void Reset() override
     {
         eventResetTimer = EVENT_RESET_TIMER;
-        m_creature->GetCombatManager().SetLeashingCheck([&](Unit*, float /*x*/, float y, float /*z*/)
-        {
+        m_creature->GetCombatManager().SetLeashingCheck([&](Unit*, float /*x*/, float y, float /*z*/) {
             return y > 4428.f;
         });
     }
@@ -1422,8 +1420,7 @@ struct npc_vengeful_harbinger : public ScriptedAI
     {
         switch (uiMovementType)
         {
-            case POINT_MOTION_TYPE:
-            {
+            case POINT_MOTION_TYPE: {
                 if (uiData == POINT_ORB_WAYPOINT)
                 {
                     m_creature->GetMotionMaster()->Clear(false, true);
@@ -1431,24 +1428,12 @@ struct npc_vengeful_harbinger : public ScriptedAI
                 }
                 break;
             }
-            // Turns out, you can just complete it at the respawned GO without credit
-            //case WAYPOINT_MOTION_TYPE:
-            //    if (uiData == POINT_ID_END && m_creature->GetMotionMaster()->GetPathId() == PATH_ID_END)
-            //        if (Player* player = m_creature->GetMap()->GetPlayer(m_playerGuid))
-            //            player->GroupEventHappens(QUEST_VENGEFUL_HARBINGER, m_creature);
-            //    break;
-            case WAYPOINT_MOTION_TYPE:
-            {
-                if (uiData == POINT_ID_END && m_creature->GetMotionMaster()->GetPathId() == PATH_ID_END)
-                {
-                    if(Creature* portalTrigger = GetClosestCreatureWithEntry(m_creature, NPC_PORTAL_TRIGGER, 45.f))
-                    {
-                        // This line needs to be called to spawn the go at the end
-                        m_creature->GetMap()->ScriptsStart(SCRIPT_TYPE_RELAY, DBSCRIPT_RESPAWN_ASCENDANT_FLOORPIECE, portalTrigger, portalTrigger);
-                    }
-                }
-                break;
-            }
+                // Turns out, you can just complete it at the respawned GO without credit
+                //case WAYPOINT_MOTION_TYPE:
+                //    if (uiData == POINT_ID_END && m_creature->GetMotionMaster()->GetPathId() == PATH_ID_END)
+                //        if (Player* player = m_creature->GetMap()->GetPlayer(m_playerGuid))
+                //            player->GroupEventHappens(QUEST_VENGEFUL_HARBINGER, m_creature);
+                //    break;
         }
     }
 
