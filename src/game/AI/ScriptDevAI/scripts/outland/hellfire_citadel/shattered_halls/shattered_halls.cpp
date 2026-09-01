@@ -205,9 +205,6 @@ void instance_shattered_halls::SetData(uint32 type, uint32 data)
 
                     // cast the execution spell
                     DoCastGroupDebuff(SPELL_KARGATH_EXECUTIONER_1);
-                    
-                    
-                    DoOrSimulateScriptTextForThisInstance(m_team == ALLIANCE ? SAY_KARGATH_EXECUTE_ALLY : SAY_KARGATH_EXECUTE_HORDE, NPC_KARGATH_BLADEFIST);
 
                     // Make Kargath yell intro
                     if (Creature* kargath = GetSingleCreatureFromStorage(NPC_KARGATH_BLADEFIST, true))
