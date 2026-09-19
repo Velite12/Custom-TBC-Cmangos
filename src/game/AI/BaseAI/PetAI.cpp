@@ -17,14 +17,14 @@
  */
 
 #include "PetAI.h"
-#include "Util/Errors.h"
+#include "AI/ScriptDevAI/ScriptDevAIMgr.h"
+#include "Entities/Creature.h"
 #include "Entities/Pet.h"
 #include "Entities/Player.h"
 #include "Spells/Spell.h"
-#include "AI/ScriptDevAI/ScriptDevAIMgr.h"
-#include "Entities/Creature.h"
-#include "World/World.h"
+#include "Util/Errors.h"
 #include "Util/Util.h"
+#include "World/World.h"
 
 int PetAI::Permissible(const Creature* creature)
 {
@@ -85,16 +85,7 @@ void PetAI::MoveInLineOfSight(Unit* who)
     if (victim && victim->IsAlive() || charmInfo->GetIsRetreating())
         return;
 
-    if (HasReactState(REACT_AGGRESSIVE)
-            && !(m_pet && m_pet->HasActionsDisabled())
-            && !(who->GetTypeId() == TYPEID_UNIT && static_cast<Creature*>(who)->IsCivilian())
-            && m_creature->CanAttackOnSight(who) && who->isInAccessablePlaceFor(m_unit)
-            && m_unit->IsWithinDistInMap(who, m_unit->GetAttackDistance(who))
-            && m_unit->GetDistanceZ(who) <= CREATURE_Z_ATTACK_RANGE_MELEE
-            && m_unit->IsWithinLOSInMap(who, true)
-            && !GetCombatScriptStatus()
-            && !who->IsCrowdControlled()
-            && !who->HasAuraPetShouldAvoidBreaking(m_pet, charmInfo->GetPetLastAttackCommandTime()))
+    if (HasReactState(REACT_AGGRESSIVE) && !(m_pet && m_pet->HasActionsDisabled()) && !(who->GetTypeId() == TYPEID_UNIT && static_cast<Creature*>(who)->IsCivilian()) && m_creature->CanAttackOnSight(who) && who->isInAccessablePlaceFor(m_unit) && m_unit->IsWithinDistInMap(who, m_unit->GetAttackDistance(who)) && m_unit->GetDistanceZ(who) <= CREATURE_Z_ATTACK_RANGE_MELEE && m_unit->IsWithinLOSInMap(who, true) && !GetCombatScriptStatus() && !who->IsCrowdControlled() && !who->HasAuraPetShouldAvoidBreaking(m_pet, charmInfo->GetPetLastAttackCommandTime()))
     {
         AttackStart(who);
 
@@ -258,7 +249,7 @@ void PetAI::UpdateAI(const uint32 diff)
                 // If stay command is set, but we don't have stay pos yet: establish current pos as stay position, adjust orientation
                 if (charmInfo->UpdateStayPosition())
                     mm->MoveStay(charmInfo->GetStayPosX(), charmInfo->GetStayPosY(), charmInfo->GetStayPosZ(), charmInfo->GetStayPosO());
-                 else
+                else
                     mm->MoveStay(charmInfo->GetStayPosX(), charmInfo->GetStayPosY(), charmInfo->GetStayPosZ());
             }
             else if (following && !m_unit->hasUnitState(UNIT_STAT_FOLLOW))
@@ -281,8 +272,7 @@ std::vector<std::tuple<SpellEntry const*, Unit*, bool>> PetAI::PickSpellWithTarg
         // Use the spell opener if target is within the range and line of sight.
         // But do not drop the spell opener in case the condition is not met to give
         // opportunity to cast it when the victim gets visible or closer.
-        else if (m_unit->IsWithinDistInMap(victim, charmInfo->GetSpellOpenerMaxRange())
-                 && m_unit->IsWithinLOSInMap(victim, true))
+        else if (m_unit->IsWithinDistInMap(victim, charmInfo->GetSpellOpenerMaxRange()) && m_unit->IsWithinLOSInMap(victim, true))
         {
             uint32 spellId = charmInfo->GetSpellOpener();
 
@@ -348,9 +338,7 @@ std::vector<std::tuple<SpellEntry const*, Unit*, bool>> PetAI::PickSpellWithTarg
             if (!ShouldCast(spellInfo, victim) || !CanAutoCast(spellInfo, m_unit))
                 continue;
 
-            // m_unit fails autocast if unit is currently unattackable (phase shift for example), so we leave nullptr
-            // which will later resolve to self targeting
-            nonblockingSpells.emplace_back(spellInfo, nullptr, false);
+            nonblockingSpells.emplace_back(spellInfo, m_unit, false);
             continue;
         }
         // Try to cast a spell if the spell is AoE
@@ -436,7 +424,7 @@ bool PetAI::CanAutoCastAreaAura(SpellEntry const* spellInfo, Unit* target) const
 {
     for (int i = 0; i < MAX_EFFECT_INDEX; ++i)
     {
-        if (target && IsAreaAuraEffect(spellInfo->Effect[i]))
+        if (IsAreaAuraEffect(spellInfo->Effect[i]))
         {
             // selfcast case
             if (spellInfo->EffectImplicitTargetA[i] == TARGET_UNIT_CASTER || spellInfo->EffectImplicitTargetA[i] == TARGET_NONE)
@@ -505,7 +493,7 @@ SpellCastResult PetAI::CheckPetCast(SpellEntry const* spellInfo, Unit* target) c
         for (unsigned int i : spellInfo->EffectImplicitTargetA)
         {
             SpellTargetInfo& targetData = SpellTargetInfoTable[i];
-            
+
             if (targetData.filter == TARGET_SCRIPT)
             {
                 script = true;
@@ -570,7 +558,9 @@ Player* PetAI::PickGroupMemberForSpell(Player* player, SpellEntry const* spellIn
 bool PetAI::Cast(std::tuple<SpellEntry const*, Unit*, bool> spellWithTarget)
 {
     // Unpack the pair, check the spell and try to cast.
-    SpellEntry const* spellInfo; Unit* target; bool opener;
+    SpellEntry const* spellInfo;
+    Unit* target;
+    bool opener;
     std::tie(spellInfo, target, opener) = spellWithTarget;
 
     uint32 flags = TRIGGERED_NORMAL_COMBAT_CAST;
