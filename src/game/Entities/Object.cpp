@@ -3252,7 +3252,7 @@ int32 WorldObject::CalculateSpellEffectValue(Unit const* target, SpellEntry cons
             if (casterCLS && spellCLS)
             {
                 float CLSPowerCreature = casterCLS->BaseDamage;
-                float CLSPowerSpell = spellProto->spellLevel > spellCLS->BaseDamage ? spellProto->spellLevel : spellCLS->BaseDamage;
+                float CLSPowerSpell = spellCLS->BaseDamage;
                 value = value * (CLSPowerCreature / CLSPowerSpell);
             }
         }
