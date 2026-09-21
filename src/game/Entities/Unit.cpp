@@ -4092,6 +4092,10 @@ float Unit::CalculateSpellCritChance(const Unit* victim, SpellSchoolMask schoolM
     if (spellInfo->HasAttribute(SPELL_ATTR_EX3_NORMAL_RANGED_ATTACK) || spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MELEE || spellInfo->DmgClass == SPELL_DAMAGE_CLASS_RANGED)
         return CalculateEffectiveCritChance(victim, GetWeaponAttackType(spellInfo), spellInfo);
 
+    // custom: instant and anesthetic poison use melee crit in addition to spell
+    if (spellInfo->SpellFamilyName == SPELLFAMILY_ROGUE && (spellInfo->SpellFamilyFlags == uint64(0x1000000000) || spellInfo->SpellFamilyFlags == uint64(0x2000)))
+        chance += GetCritChance(SPELL_SCHOOL_NORMAL);
+
     chance += GetCritChance(spellInfo, schoolMask);
     // Own chance appears to be zero / below zero / unmeaningful for some reason (debuffs?): skip calculation, unit is incapable
     if (chance < 0.005f)
