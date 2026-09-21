@@ -3669,7 +3669,21 @@ bool Unit::CanCrit(const SpellEntry* entry, SpellSchoolMask schoolMask, WeaponAt
         case SPELL_DAMAGE_CLASS_MELEE:
         case SPELL_DAMAGE_CLASS_RANGED: return CanCrit(attType);
         case SPELL_DAMAGE_CLASS_NONE:
-        case SPELL_DAMAGE_CLASS_MAGIC:  return CanCrit(schoolMask);
+        case SPELL_DAMAGE_CLASS_MAGIC: 
+            if (entry->SpellFamilyName == SPELLFAMILY_ROGUE)
+            {
+                switch (entry->SpellFamilyFlags.Flags)
+                {
+                    // custom: instant/anesthetic check if can crit by using melee or spell since rogue has no default spell crit
+                    case uint64(0x2000):
+                    case uint64(0x1000000000):
+                        return CanCrit(schoolMask) || CanCrit(SPELL_SCHOOL_MASK_NORMAL);
+                    default:
+                        return CanCrit(schoolMask);
+                }
+            }
+            else
+                return CanCrit(schoolMask);
     }
     return false;
 }
