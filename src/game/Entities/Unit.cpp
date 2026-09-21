@@ -3677,7 +3677,7 @@ bool Unit::CanCrit(const SpellEntry* entry, SpellSchoolMask schoolMask, WeaponAt
                     // custom: instant/anesthetic check if can crit by using melee or spell since rogue has no default spell crit
                     case uint64(0x2000):
                     case uint64(0x1000000000):
-                        return CanCrit(schoolMask) || CanCrit(SPELL_SCHOOL_MASK_NORMAL);
+                        return CanCrit(schoolMask) || CanCrit(GetWeaponAttackType(entry));
                     default:
                         return CanCrit(schoolMask);
                 }
@@ -4108,7 +4108,7 @@ float Unit::CalculateSpellCritChance(const Unit* victim, SpellSchoolMask schoolM
 
     // custom: instant and anesthetic poison use melee crit in addition to spell
     if (spellInfo->SpellFamilyName == SPELLFAMILY_ROGUE && (spellInfo->SpellFamilyFlags & uint64(0x1000000000) || spellInfo->SpellFamilyFlags & uint64(0x2000)))
-        chance += GetCritChance(SPELL_SCHOOL_MASK_NORMAL);
+        chance += GetCritChance(GetWeaponAttackType(spellInfo));
 
     chance += GetCritChance(spellInfo, schoolMask);
     // Own chance appears to be zero / below zero / unmeaningful for some reason (debuffs?): skip calculation, unit is incapable
