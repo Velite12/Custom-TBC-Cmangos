@@ -4093,7 +4093,7 @@ float Unit::CalculateSpellCritChance(const Unit* victim, SpellSchoolMask schoolM
         return CalculateEffectiveCritChance(victim, GetWeaponAttackType(spellInfo), spellInfo);
 
     // custom: instant and anesthetic poison use melee crit in addition to spell
-    if (spellInfo->SpellFamilyName == SPELLFAMILY_ROGUE && (spellInfo->SpellFamilyFlags == uint64(0x1000000000) || spellInfo->SpellFamilyFlags == uint64(0x2000)))
+    if (spellInfo->SpellFamilyName == SPELLFAMILY_ROGUE && (spellInfo->SpellFamilyFlags & uint64(0x1000000000) || spellInfo->SpellFamilyFlags & uint64(0x2000)))
         chance += GetCritChance(SPELL_SCHOOL_MASK_NORMAL);
 
     chance += GetCritChance(spellInfo, schoolMask);
