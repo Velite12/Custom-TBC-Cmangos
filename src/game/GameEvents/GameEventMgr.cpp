@@ -1039,7 +1039,7 @@ GameEventCreatureData const* GameEventMgr::GetCreatureUpdateDataForActiveEvent(u
 
 struct GameEventUpdateCreatureDataInMapsWorker
 {
-    GameEventUpdateCreatureDataInMapsWorker(ObjectGuid guid, CreatureData const* data, GameEventCreatureData* event_data, bool activate)
+    GameEventUpdateCreatureDataInMapsWorker(ObjectGuid guid, CreatureData* data, GameEventCreatureData* event_data, bool activate)
         : i_guid(guid), i_data(data), i_event_data(event_data), i_activate(activate) {}
 
     void operator()(Map* map)
@@ -1058,7 +1058,7 @@ struct GameEventUpdateCreatureDataInMapsWorker
     }
 
     ObjectGuid i_guid;
-    CreatureData const* i_data;
+    CreatureData* i_data;
     GameEventCreatureData* i_event_data;
     bool i_activate;
 };
@@ -1068,7 +1068,7 @@ void GameEventMgr::UpdateCreatureData(int16 event_id, bool activate)
     for (auto& itr : m_gameEventCreatureData[event_id])
     {
         // Remove the creature from grid
-        CreatureData const* data = sObjectMgr.GetCreatureData(itr.first);
+        CreatureData* data = sObjectMgr.GetCreatureData(itr.first);
         if (!data)
             continue;
 

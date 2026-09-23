@@ -611,7 +611,7 @@ class Creature : public Unit
         void RemoveFromWorld() override;
         void CleanupsBeforeDelete() override;
 
-        bool Create(uint32 dbGuid, uint32 guidlow, CreatureCreatePos& cPos, CreatureInfo const* cinfo, const CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr);
+        bool Create(uint32 dbGuid, uint32 guidlow, CreatureCreatePos& cPos, CreatureInfo const* cinfo, CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr);
         bool LoadCreatureAddon(bool reload);
 
         // SelectLevel set creature bases stats for given level or for default levels stored in db
@@ -716,7 +716,7 @@ class Creature : public Unit
         void SetSpellList(uint32 spellSet);
         void UpdateImmunitiesSet(uint32 immunitySet);
 
-        bool UpdateEntry(uint32 Entry, const CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr, bool preserveHPAndPower = true);
+        bool UpdateEntry(uint32 Entry, CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr, bool preserveHPAndPower = true);
         void ResetEntry(bool respawn = false);
 
         void ApplyGameEventSpells(GameEventCreatureData const* eventData, bool activated);
@@ -973,8 +973,8 @@ class Creature : public Unit
         bool IsEnemyCheckIgnoresLos() const override;
 
     protected:
-        bool CreateFromProto(uint32 dbGuid, uint32 guidlow, CreatureInfo const* cinfo, const CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr);
-        bool InitEntry(uint32 Entry, const CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr);
+        bool CreateFromProto(uint32 dbGuid, uint32 guidlow, CreatureInfo const* cinfo, CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr);
+        bool InitEntry(uint32 Entry, CreatureData* data = nullptr, GameEventCreatureData const* eventData = nullptr);
 
         uint32 GetCreatureConditionalSpawnEntry(uint32 guidlow, Map* map) const;
 

@@ -321,7 +321,7 @@ void Creature::RemoveCorpse(bool inPlace)
 /**
  * change the entry of creature until respawn
  */
-bool Creature::InitEntry(uint32 Entry, CreatureData const* data /*=nullptr*/, GameEventCreatureData const* eventData /*=nullptr*/)
+bool Creature::InitEntry(uint32 Entry, CreatureData* data /*=nullptr*/, GameEventCreatureData const* eventData /*=nullptr*/)
 {
     // use game event entry if any instead default suggested
     if (eventData && eventData->entry_id)
@@ -349,6 +349,15 @@ bool Creature::InitEntry(uint32 Entry, CreatureData const* data /*=nullptr*/, Ga
                 return false;
             }
         }
+    }
+    if (GetMap()->IsDungeon() || GetMap()->IsRaid())
+    {
+        // custom: instance trash has respawn set so it doesn't come back
+        if (data->spawntimesecsmin >= 3600 && data->spawntimesecsmax >= 3600)
+        {
+            data->spawntimesecsmin = 86400;
+            data->spawntimesecsmax = 86400;
+        } 
     }
 
     SetEntry(Entry);                                        // normal entry always
@@ -527,7 +536,7 @@ bool Creature::InitEntry(uint32 Entry, CreatureData const* data /*=nullptr*/, Ga
     return true;
 }
 
-bool Creature::UpdateEntry(uint32 Entry, const CreatureData* data /*=nullptr*/, GameEventCreatureData const* eventData /*=nullptr*/, bool preserveHPAndPower /*=true*/)
+bool Creature::UpdateEntry(uint32 Entry, CreatureData* data /*=nullptr*/, GameEventCreatureData const* eventData /*=nullptr*/, bool preserveHPAndPower /*=true*/)
 {
     if (!InitEntry(Entry, data, eventData))
         return false;
@@ -663,7 +672,7 @@ bool Creature::UpdateEntry(uint32 Entry, const CreatureData* data /*=nullptr*/, 
 void Creature::ResetEntry(bool respawn)
 {
     bool isPet = GetObjectGuid().GetHigh() == HIGHGUID_PET;
-    CreatureData const* data = isPet ? nullptr : sObjectMgr.GetCreatureData(GetDbGuid());
+    CreatureData* data = isPet ? nullptr : sObjectMgr.GetCreatureData(GetDbGuid());
     GameEventCreatureData const* eventData = isPet ? nullptr : sGameEventMgr.GetCreatureUpdateDataForActiveEvent(GetDbGuid());
 
     if (respawn)
@@ -926,7 +935,7 @@ bool Creature::AIM_Initialize()
     return true;
 }
 
-bool Creature::Create(uint32 dbGuid, uint32 guidlow, CreatureCreatePos& cPos, CreatureInfo const* cinfo, const CreatureData* data /*= nullptr*/, GameEventCreatureData const* eventData /*= nullptr*/)
+bool Creature::Create(uint32 dbGuid, uint32 guidlow, CreatureCreatePos& cPos, CreatureInfo const* cinfo, CreatureData* data /*= nullptr*/, GameEventCreatureData const* eventData /*= nullptr*/)
 {
     SetMap(cPos.GetMap());
     SetRespawnCoord(cPos);
@@ -1678,7 +1687,7 @@ void Creature::TriggerDelayedPetSpells()
     m_delayedPetSpells = false;
 }
 
-bool Creature::CreateFromProto(uint32 dbGuid, uint32 guidlow, CreatureInfo const* cinfo, const CreatureData* data /*=nullptr*/, GameEventCreatureData const* eventData /*=nullptr*/)
+bool Creature::CreateFromProto(uint32 dbGuid, uint32 guidlow, CreatureInfo const* cinfo, CreatureData* data /*=nullptr*/, GameEventCreatureData const* eventData /*=nullptr*/)
 {
     m_originalEntry = cinfo->Entry;
 
@@ -1691,7 +1700,7 @@ bool Creature::CreateFromProto(uint32 dbGuid, uint32 guidlow, CreatureInfo const
 
 bool Creature::LoadFromDB(uint32 dbGuid, Map* map, uint32 newGuid, uint32 forcedEntry, GenericTransport* /*transport*/)
 {
-    CreatureData const* data = sObjectMgr.GetCreatureData(dbGuid);
+    CreatureData* data = sObjectMgr.GetCreatureData(dbGuid);
 
     if (!data)
     {
