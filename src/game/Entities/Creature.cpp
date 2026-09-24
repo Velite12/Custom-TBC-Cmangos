@@ -353,7 +353,7 @@ bool Creature::InitEntry(uint32 Entry, CreatureData* data /*=nullptr*/, GameEven
     if (GetMap()->IsDungeon() || GetMap()->IsRaid())
     {
         // custom: instance trash has respawn set so it doesn't come back
-        if (data->spawntimesecsmin >= 3600 && data->spawntimesecsmax >= 3600)
+        if (data && data->spawntimesecsmin >= 3600 && data->spawntimesecsmax >= 3600)
         {
             data->spawntimesecsmin = 86400;
             data->spawntimesecsmax = 86400;
