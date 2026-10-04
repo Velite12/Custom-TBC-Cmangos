@@ -355,8 +355,8 @@ bool Creature::InitEntry(uint32 Entry, CreatureData* data /*=nullptr*/, GameEven
         // custom: instance trash has respawn set so it doesn't come back
         if (data && data->spawntimesecsmin >= 3600 && data->spawntimesecsmax >= 3600)
         {
-            data->spawntimesecsmin = 86400;
-            data->spawntimesecsmax = 86400;
+            data->spawntimesecsmin = 604800;
+            data->spawntimesecsmax = 604800;
         } 
     }
 
