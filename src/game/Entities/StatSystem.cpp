@@ -687,6 +687,31 @@ void Player::UpdateManaRegen()
             pet->UpdateScalingAuras();
 }
 
+void Player::UpdateArmorPenetration(bool apply)
+{   
+    AuraList const& armorAuras = GetAurasByType(SPELL_AURA_MOD_TARGET_RESISTANCE);
+    for (auto armorAura : armorAuras)
+    {
+        // affects all weapons
+        if (armorAura->GetSpellProto()->EquippedItemClass == -1)
+        {
+            ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, apply);
+            continue;
+        }
+
+        // dependent on weapon class
+        for (uint8 i = 0; i < MAX_ATTACK; ++i)
+        {
+            Item* weapon = GetWeaponForAttack(WeaponAttackType(i));
+            if (weapon && weapon->IsFitToSpellRequirements(armorAura->GetSpellProto()))
+            {
+                ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, apply);
+                break;
+            }
+        }
+    }
+}
+
 void Player::UpdateEnergyRegen()
 {
     // need to award mana based on previous rate - Patch 2.2

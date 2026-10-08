@@ -1681,6 +1681,7 @@ class Player : public Unit
         void UpdateAllSpellCritChances();
         void UpdateSpellCritChance(uint32 school);
         void UpdateExpertise(WeaponAttackType attType);
+        void UpdateArmorPenetration(bool apply);
         void UpdateManaRegen();
         void UpdateEnergyRegen();
 

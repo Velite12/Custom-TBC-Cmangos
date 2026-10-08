@@ -6513,7 +6513,9 @@ void Aura::HandleModTargetResistance(bool apply, bool Real)
     // applied to damage as HandleNoImmediateEffect in Unit::CalculateAbsorbAndResist and Unit::CalcArmorReducedDamage
     // show armor penetration
     if (target->GetTypeId() == TYPEID_PLAYER && (m_modifier.m_miscvalue & SPELL_SCHOOL_MASK_NORMAL))
-        target->ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, m_modifier.m_amount, apply);
+    {
+        ((Player*)GetTarget())->UpdateArmorPenetration(apply);
+    }
 
     // show as spell penetration only full spell penetration bonuses (all resistances except armor and holy
     if (target->GetTypeId() == TYPEID_PLAYER && (m_modifier.m_miscvalue & SPELL_SCHOOL_MASK_SPELL) == SPELL_SCHOOL_MASK_SPELL)
