@@ -1681,7 +1681,6 @@ class Player : public Unit
         void UpdateAllSpellCritChances();
         void UpdateSpellCritChance(uint32 school);
         void UpdateExpertise(WeaponAttackType attType);
-        void UpdateArmorPenetration(bool apply);
         void UpdateManaRegen();
         void UpdateEnergyRegen();
 
@@ -1881,6 +1880,7 @@ class Player : public Unit
         void _ApplyWeaponDependentAuraMods(Item* item, WeaponAttackType attackType, bool apply);
         void _ApplyWeaponDependentAuraCritMod(Item* item, WeaponAttackType attackType, Aura* aura, bool apply);
         void _ApplyWeaponDependentAuraDamageMod(Item* item, WeaponAttackType attackType, Aura* aura, bool apply);
+        void _ApplyWeaponDependentAuraArmorPenMod(Item* item, WeaponAttackType attackType, Aura* aura, bool apply);
 
         void _ApplyItemMods(Item* item, uint8 slot, bool apply);
         void _RemoveAllItemMods();

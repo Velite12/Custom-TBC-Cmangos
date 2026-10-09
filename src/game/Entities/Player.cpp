@@ -7553,6 +7553,10 @@ void Player::_ApplyWeaponDependentAuraMods(Item* item, WeaponAttackType attackTy
     AuraList const& auraDamagePCTList = GetAurasByType(SPELL_AURA_MOD_DAMAGE_PERCENT_DONE);
     for (auto itr : auraDamagePCTList)
         _ApplyWeaponDependentAuraDamageMod(item, attackType, itr, apply);
+
+    AuraList const& auraArmorPenList = GetAurasByType(SPELL_AURA_MOD_TARGET_RESISTANCE);
+    for (auto itr : auraArmorPenList)
+        _ApplyWeaponDependentAuraArmorPenMod(item, attackType, itr, apply);
 }
 
 void Player::_ApplyWeaponDependentAuraCritMod(Item* item, WeaponAttackType attackType, Aura* aura, bool apply)
@@ -7572,7 +7576,24 @@ void Player::_ApplyWeaponDependentAuraCritMod(Item* item, WeaponAttackType attac
 
     if (item->IsFitToSpellRequirements(aura->GetSpellProto()))
     {
+        // custom: offhand crit applies to mainhand as well
+        if (attackType == OFF_ATTACK)
+        {
+            HandleBaseModValue(CRIT_PERCENTAGE, FLAT_MOD, float(aura->GetModifier()->m_amount), apply);
+        }
         HandleBaseModValue(mod, FLAT_MOD, float(aura->GetModifier()->m_amount), apply);
+    }
+}
+
+void Player::_ApplyWeaponDependentAuraArmorPenMod(Item* item, WeaponAttackType attackType, Aura* aura, bool apply)
+{
+    // generic not weapon specific case processes in aura code
+    if (aura->GetSpellProto()->EquippedItemClass == -1)
+        return;
+
+    if (item->IsFitToSpellRequirements(aura->GetSpellProto()))
+    {
+        ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, aura->GetModifier()->m_amount, apply);
     }
 }
 
@@ -10594,6 +10615,7 @@ Item* Player::EquipItem(uint16 pos, Item* pItem, bool update)
 {
     AddEnchantmentDurations(pItem);
     AddItemDurations(pItem);
+    
 
     uint8 bag = pos >> 8;
     uint8 slot = pos & 255;
@@ -10646,11 +10668,17 @@ Item* Player::EquipItem(uint16 pos, Item* pItem, bool update)
         ApplyEquipCooldown(pItem);
 
         if (slot == EQUIPMENT_SLOT_MAINHAND)
+        {
             UpdateWeaponDependantStats(BASE_ATTACK);
+        }  
         else if (slot == EQUIPMENT_SLOT_OFFHAND)
+        {
             UpdateWeaponDependantStats(OFF_ATTACK);
+        }
         else if (slot == EQUIPMENT_SLOT_RANGED)
+        {
             UpdateWeaponDependantStats(RANGED_ATTACK);
+        }  
     }
     else
     {
@@ -10690,6 +10718,7 @@ void Player::QuickEquipItem(uint16 pos, Item* pItem)
         ApplyItemOnStoreSpell(pItem, true);
 
         uint8 slot = pos & 255;
+
         VisualizeItem(slot, pItem);
 
         if (IsInWorld())
@@ -10769,6 +10798,7 @@ void Player::RemoveItem(uint8 bag, uint8 slot, bool update)
 
         RemoveEnchantmentDurations(pItem);
         RemoveItemDurations(pItem);
+        
 
         if (bag == INVENTORY_SLOT_BAG_0)
         {
@@ -10809,6 +10839,7 @@ void Player::RemoveItem(uint8 bag, uint8 slot, bool update)
                     }
                     else if (slot == EQUIPMENT_SLOT_OFFHAND)
                         UpdateWeaponDependantStats(OFF_ATTACK);
+
                 }
             }
 
@@ -10817,6 +10848,7 @@ void Player::RemoveItem(uint8 bag, uint8 slot, bool update)
 
             if (slot < EQUIPMENT_SLOT_END)
                 SetVisibleItemSlot(slot, nullptr);
+            
         }
         else
         {
@@ -10935,11 +10967,17 @@ void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
 
                 // update weapon dependant stats
                 if (slot == EQUIPMENT_SLOT_MAINHAND)
+                {
                     UpdateWeaponDependantStats(BASE_ATTACK);
+                }    
                 else if (slot == EQUIPMENT_SLOT_OFFHAND)
+                {
                     UpdateWeaponDependantStats(OFF_ATTACK);
+                }    
                 else if (slot == EQUIPMENT_SLOT_RANGED)
+                {
                     UpdateWeaponDependantStats(RANGED_ATTACK);
+                }  
 
                 // equipment visual show
                 SetVisibleItemSlot(slot, nullptr);
@@ -10955,6 +10993,7 @@ void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
             pItem->RemoveFromWorld();
             GetMap()->AddUpdateRemoveObject({ GetObjectGuid() }, pItem->GetObjectGuid());
         }
+        
 
         // pItem->SetOwnerGUID(0);
         pItem->SetGuidValue(ITEM_FIELD_CONTAINED, ObjectGuid());

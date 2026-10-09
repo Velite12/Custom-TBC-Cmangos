@@ -687,31 +687,87 @@ void Player::UpdateManaRegen()
             pet->UpdateScalingAuras();
 }
 
-void Player::UpdateArmorPenetration(bool apply)
+/*
+void Player::AddArmorPenetration(WeaponAttackType attackType)
 {   
     AuraList const& armorAuras = GetAurasByType(SPELL_AURA_MOD_TARGET_RESISTANCE);
     for (auto armorAura : armorAuras)
     {
-        // affects all weapons
-        if (armorAura->GetSpellProto()->EquippedItemClass == -1)
+        if (armorAura->GetModifier()->m_miscvalue & SPELL_SCHOOL_MASK_NORMAL)
         {
-            ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, apply);
-            continue;
-        }
+            // handled separately
+            if (armorAura->GetSpellProto()->EquippedItemClass == -1)
+                continue;
 
-        // dependent on weapon class
-        for (uint8 i = 0; i < MAX_ATTACK; ++i)
-        {
-            Item* weapon = GetWeaponForAttack(WeaponAttackType(i));
-            if (weapon && weapon->IsFitToSpellRequirements(armorAura->GetSpellProto()))
+            // dependent on weapon class
+            Item* weapon1 = GetWeaponForAttack(BASE_ATTACK);
+            Item* weapon2 = GetWeaponForAttack(OFF_ATTACK);
+            Item* weapon3 = GetWeaponForAttack(RANGED_ATTACK);
+            bool fit1 = weapon1 && weapon1->IsFitToSpellRequirements(armorAura->GetSpellProto());
+            bool fit2 = weapon2 && weapon2->IsFitToSpellRequirements(armorAura->GetSpellProto());
+            bool fit3 = weapon3 && weapon3->IsFitToSpellRequirements(armorAura->GetSpellProto());
+
+            switch (attackType)
             {
-                ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, apply);
-                break;
+                case BASE_ATTACK:
+                default:
+                    if (fit1 && (!fit2 && !fit3))
+                        ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, true);
+                    break;
+                case OFF_ATTACK:
+                    if (fit2 && (!fit1 && !fit3))
+                        ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, true);
+                    break;
+                case RANGED_ATTACK:
+                    if (fit3 && (!fit1 && !fit2))
+                        ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, true);
+                    break;
             }
         }
     }
 }
 
+void Player::RemoveArmorPenetration(WeaponAttackType attackType)
+{   
+    AuraList const& armorAuras = GetAurasByType(SPELL_AURA_MOD_TARGET_RESISTANCE);
+    for (auto armorAura : armorAuras)
+    {
+        if (armorAura->GetModifier()->m_miscvalue & SPELL_SCHOOL_MASK_NORMAL)
+        {
+            // handled separately
+            if (armorAura->GetSpellProto()->EquippedItemClass == -1)
+                continue;
+
+            // dependent on weapon class
+
+            // dependent on weapon class
+            Item* weapon1 = GetWeaponForAttack(BASE_ATTACK);
+            Item* weapon2 = GetWeaponForAttack(OFF_ATTACK);
+            Item* weapon3 = GetWeaponForAttack(RANGED_ATTACK);
+            bool fit1 = weapon1 && weapon1->IsFitToSpellRequirements(armorAura->GetSpellProto());
+            bool fit2 = weapon2 && weapon2->IsFitToSpellRequirements(armorAura->GetSpellProto());
+            bool fit3 = weapon3 && weapon3->IsFitToSpellRequirements(armorAura->GetSpellProto());
+
+            switch (attackType)
+            {
+                case BASE_ATTACK:
+                default:
+                    if (fit1 && (!fit2 && !fit3))
+                        ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, false);
+                    break;
+                case OFF_ATTACK:
+                    if (fit2 && (!fit1 && !fit3))
+                        ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, false);
+                    break;
+                case RANGED_ATTACK:
+                    if (fit3 && (!fit1 && !fit2))
+                        ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, armorAura->GetModifier()->m_amount, false);
+                    break;
+            }
+        }
+    }
+}
+*/
 void Player::UpdateEnergyRegen()
 {
     // need to award mana based on previous rate - Patch 2.2

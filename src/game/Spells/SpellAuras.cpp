@@ -6514,7 +6514,18 @@ void Aura::HandleModTargetResistance(bool apply, bool Real)
     // show armor penetration
     if (target->GetTypeId() == TYPEID_PLAYER && (m_modifier.m_miscvalue & SPELL_SCHOOL_MASK_NORMAL))
     {
-        ((Player*)GetTarget())->UpdateArmorPenetration(apply);
+        if (GetSpellProto()->EquippedItemClass == -1)
+            target->ApplyModInt32Value(PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE, m_modifier.m_amount, apply);
+        else
+        {
+            // apply item specific bonuses for already equipped weapon
+            if (Real)
+            {
+                for (int i = 0; i < MAX_ATTACK; ++i)
+                    if (Item* pItem = ((Player*)target)->GetWeaponForAttack(WeaponAttackType(i), true, false))
+                        ((Player*)target)->_ApplyWeaponDependentAuraArmorPenMod(pItem, WeaponAttackType(i), this, apply);
+            }
+        }
     }
 
     // show as spell penetration only full spell penetration bonuses (all resistances except armor and holy
