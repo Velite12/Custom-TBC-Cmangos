@@ -7576,12 +7576,11 @@ void Player::_ApplyWeaponDependentAuraCritMod(Item* item, WeaponAttackType attac
 
     if (item->IsFitToSpellRequirements(aura->GetSpellProto()))
     {
-        // custom: offhand crit applies to mainhand as well
+        // custom: offhand crit applies to mainhand instead
         if (attackType == OFF_ATTACK)
-        {
             HandleBaseModValue(CRIT_PERCENTAGE, FLAT_MOD, float(aura->GetModifier()->m_amount), apply);
-        }
-        HandleBaseModValue(mod, FLAT_MOD, float(aura->GetModifier()->m_amount), apply);
+        else
+            HandleBaseModValue(mod, FLAT_MOD, float(aura->GetModifier()->m_amount), apply);
     }
 }
 
